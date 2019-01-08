@@ -21,6 +21,6 @@ app.get("/", function (request, response) {
 app.use("/home", function (request, response) {
     response.status(404).send(`Ресурс не найден`);
 });
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
     console.log("start on port 3000");
 });
