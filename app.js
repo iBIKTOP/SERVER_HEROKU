@@ -30,14 +30,14 @@ app.use(function (request, response, next) {
 });
 
 app.get("/", function(req,res){
-    connection.connect();
+    // connection.connect();
     let query = "SELECT * FROM words";
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
         console.log(data);
-        res.send(data);
+        res.json(data);
     });
-    connection.end();
+    // connection.end();
 });
 
 app.listen(PORT, function(){
