@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const fs = require("fs");
+const IP = require("./tools/getIP.js");
+const serverIP = IP.getIP();
 
 let connection = null;
 if(process.env.JAWSDB_URL){
@@ -41,7 +43,5 @@ app.get("/", function(req,res){
 });
 
 app.listen(PORT, function(){
-    console.log("Server started in port " + PORT);
-})
-
-
+    console.log("Server is available at http://" + serverIP + ":" + PORT);
+});
