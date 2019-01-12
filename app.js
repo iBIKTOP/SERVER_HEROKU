@@ -6,15 +6,15 @@ const IP = require("./tools/getIP.js");
 const serverIP = IP.getIP();
 
 let connection = null;
-if(process.env.JAWSDB_URL){
+if (process.env.JAWSDB_URL) {
     connection = mysql.createConnection(process.env.JAWSDB_URL);
 }
-else{
+else {
     connection = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'root',
-        password : '',
-        database : 'db'
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'db'
     });
 }
 
@@ -28,20 +28,24 @@ app.use(function (request, response, next) {
     let data = `${hour}:${minutes}:${seconds} ${request.method} ${request.url} ${request.get("user-agent")}`;
     console.log(data);
     fs.appendFile("server.log", data + "\n", function () { });
+
+    setInterval(function () {
+        connection.query('SELECT 1');
+    }, 5000);
+
     next();
 });
 
-app.get("/", function(req,res){
-    // connection.connect();
+
+app.get("/", function (req, res) {
     let query = "SELECT * FROM words";
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
         console.log(data);
         res.json(data);
     });
-    // connection.end();
 });
 
-app.listen(PORT, function(){
+app.listen(PORT, function () {
     console.log("Server is available at http://" + serverIP + ":" + PORT);
 });
