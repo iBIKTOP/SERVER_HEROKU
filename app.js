@@ -46,6 +46,15 @@ app.get("/", function (req, res) {
     });
 });
 
+app.get("/users", function (req, res) {
+    let query = "SELECT * FROM users";
+    connection.query(query, function (error, data, fields) {
+        if (error) throw error;
+        console.log(data);
+        res.json(data);
+    });
+});
+
 app.listen(PORT, function () {
     console.log("Server is available at http://" + serverIP + ":" + PORT);
 });
