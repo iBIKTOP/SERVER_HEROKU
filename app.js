@@ -4,6 +4,8 @@ const mysql = require("mysql");
 const fs = require("fs");
 const IP = require("./tools/getIP.js");
 const serverIP = IP.getIP();
+const bodyParser = require("body-parser");
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 let connection = null;
 if (process.env.JAWSDB_URL) {
@@ -19,6 +21,7 @@ else {
 }
 
 const PORT = process.env.PORT || 5000;
+
 
 app.use(function (request, response, next) {
     let now = new Date();
@@ -48,6 +51,17 @@ app.get("/", function (req, res) {
 
 app.get("/users", function (req, res) {
     let query = "SELECT * FROM users";
+    connection.query(query, function (error, data, fields) {
+        if (error) throw error;
+        console.log(data);
+        res.json(data);
+    });
+});
+
+app.post("/addUser", urlencodedParser, function (req, res) {
+    if(!req.body) return res.sendStatus(400);
+    console.log(res.body);
+    let query = "INSERT INTO `users` (`id`, `login`, `pass`) VALUES (NULL, res.body.login, res.body.pass);";
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
         console.log(data);
