@@ -2,10 +2,11 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const fs = require("fs");
-const IP = require("./tools/getIP.js");
-const serverIP = IP.getIP();
+// const IP = require("./tools/getIP.js");
+// const serverIP = IP.getIP();
+const md5 = require("md5");
 const bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({extended: false});
+const jsonParser = bodyParser.json();
 
 let connection = null;
 if (process.env.JAWSDB_URL) {
@@ -58,17 +59,17 @@ app.get("/users", function (req, res) {
     });
 });
 
-app.post("/addUser", urlencodedParser, function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-    console.log(res.body);
-    let query = "INSERT INTO `users` (`id`, `login`, `pass`) VALUES (NULL, res.body.login, res.body.pass);";
+app.post("/addUser", jsonParser, function (req, res) {
+    if (!req.body) return res.sendStatus(400);
+    console.log(req.body);
+    let query = "INSERT INTO `users` (`id`, `login`, `pass`) VALUES (NULL,'" + req.body.login + "','" + md5(req.body.pass) + "')";
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
-        console.log(data);
-        res.json(data);
+        res.json(req.body);
     });
 });
 
 app.listen(PORT, function () {
-    console.log("Server is available at http://" + serverIP + ":" + PORT);
+    // console.log("Server is available at http://" + serverIP + ":" + PORT);
+    console.log("Server is started in port: " + PORT);
 });
