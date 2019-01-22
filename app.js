@@ -59,6 +59,16 @@ app.get("/users", function (req, res) {
     });
 });
 
+app.get("/users/:login", function (req, res) {
+    let login = req.params.login;
+    let query = `SELECT * FROM users WHERE login='${login}'`;
+    connection.query(query, function (error, data, fields) {
+        if (error) throw error;
+        console.log(data);
+        res.json(data);
+    });
+});
+
 app.post("/addUser", jsonParser, function (req, res) {
     if (!req.body) return res.sendStatus(400);
     console.log(req.body);
