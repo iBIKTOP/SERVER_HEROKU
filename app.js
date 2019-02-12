@@ -41,8 +41,10 @@ app.use(function (request, response, next) {
 });
 
 
-app.get("/", function (req, res) {
-    let query = "SELECT * FROM words";
+app.get("/:user", function (req, res) {
+    let user = req.params.user;
+    console.log("запрос с : " + user);
+    let query = `SELECT * FROM words WHERE user='${user}'`;
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
         console.log(data);
@@ -50,14 +52,14 @@ app.get("/", function (req, res) {
     });
 });
 
-app.get("/users", function (req, res) {
-    let query = "SELECT * FROM users";
-    connection.query(query, function (error, data, fields) {
-        if (error) throw error;
-        console.log(data);
-        res.json(data);
-    });
-});
+// app.get("/users", function (req, res) {
+//     let query = "SELECT * FROM users";
+//     connection.query(query, function (error, data, fields) {
+//         if (error) throw error;
+//         console.log(data);
+//         res.json(data);
+//     });
+// });
 
 app.get("/users/:login", function (req, res) {
     let login = req.params.login;
