@@ -17,7 +17,7 @@ else {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'db'
+        database: 'english'
     });
 }
 
@@ -41,10 +41,10 @@ app.use(function (request, response, next) {
 });
 
 
-app.get("/:user", function (req, res) {
-    let user = req.params.user;
-    console.log("запрос с : " + user);
-    let query = `SELECT * FROM words WHERE user='${user}'`;
+app.get("/:userID", function (req, res) {
+    let userID = req.params.userID;
+    console.log("запрос с : " + userID);
+    let query = `SELECT * FROM userGroups WHERE userID='${userID}'`;
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
         console.log(data);
