@@ -14,10 +14,10 @@ if (process.env.JAWSDB_URL) {
 }
 else {
     connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'english'
+        host: 'q7cxv1zwcdlw7699.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        user: 'qo4wtshoowl0t1lu',
+        password: 'epaso6xnhmawlvfg',
+        database: 'tggbgd35s83tdavi'
     });
 }
 
@@ -44,7 +44,7 @@ app.use(function (request, response, next) {
 app.get("/:userID", function (req, res) {
     let userID = req.params.userID;
     console.log("запрос с : " + userID);
-    let query = `SELECT * FROM userGroups WHERE userID='${userID}'`;
+    let query = `SELECT * FROM user_groups WHERE user_id='${userID}'`;
     connection.query(query, function (error, data, fields) {
         if (error) throw error;
         console.log(data);
