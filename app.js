@@ -23,7 +23,6 @@ else {
 
 const PORT = process.env.PORT || 5000;
 
-
 app.use(function (request, response, next) {
     let now = new Date();
     let hour = now.getHours();
@@ -41,6 +40,17 @@ app.use(function (request, response, next) {
 });
 
 
+app.get("/irregular_verbs", function (req, res) {
+    console.log("start!!!!");
+    let query = "SELECT * FROM irregular_verbs";
+    connection.query(query, function (error, data, fields) {
+        if (error) throw error;
+        console.log(data);
+        res.json(data);
+    });
+});
+
+//getting user's groups
 app.get("/:userID", function (req, res) {
     let userID = req.params.userID;
     console.log("запрос с : " + userID);
@@ -51,15 +61,6 @@ app.get("/:userID", function (req, res) {
         res.json(data);
     });
 });
-
-// app.get("/users", function (req, res) {
-//     let query = "SELECT * FROM users";
-//     connection.query(query, function (error, data, fields) {
-//         if (error) throw error;
-//         console.log(data);
-//         res.json(data);
-//     });
-// });
 
 app.get("/users/:login", function (req, res) {
     let login = req.params.login;
